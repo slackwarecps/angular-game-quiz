@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angulargame1": {
+      "hosting": {
+        "teste1": [
+          "gamefabio2004"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angulargame1"
+  }
+}
