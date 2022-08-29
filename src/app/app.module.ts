@@ -1,26 +1,40 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { PreJogoComponent } from './component/pre-jogo/pre-jogo.component';
-import { LoginComponent } from './component/login/login.component';
-import { JogoComponent } from './component/jogo/jogo.component';
 import { AdminComponent } from './component/admin/admin.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatListModule } from '@angular/material/list';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatInputModule } from '@angular/material/input';
+import { Dialog1Component } from './component/admin/dialogs/dialog1/dialog1.component';
+import { JogoComponent } from './component/jogo/jogo.component';
+import { LoginComponent } from './component/login/login.component';
+import { PreJogoComponent } from './component/pre-jogo/pre-jogo.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [AppComponent, PreJogoComponent, LoginComponent, JogoComponent, AdminComponent],
+  declarations: [
+    AppComponent,
+    PreJogoComponent,
+    LoginComponent,
+    JogoComponent,
+    AdminComponent,
+    Dialog1Component,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,6 +42,7 @@ import { MatInputModule } from '@angular/material/input';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    AngularFireModule.initializeApp(environment.firebase),
     FormsModule,
     ReactiveFormsModule,
     MatListModule,
@@ -35,6 +50,11 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatSnackBarModule,
     MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatIconModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

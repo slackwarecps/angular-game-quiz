@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/shared/auth.service';
@@ -9,10 +11,17 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  readonly PRE_JOGO_PATH: string = '/pre-jogo';
   loginForm!: FormGroup;
   cadastro?: boolean;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private auth: AuthService,
+    private afAuth: AngularFireAuth,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -37,34 +46,35 @@ export class LoginComponent implements OnInit {
     //   .catch((err) =>
     //     this.snackBar.open('Problema ao autenticar no Google.', 'Erro', { duration: 5000 })
     //   );
+    this.auth.googleSignIn();
+  }
+
+  signInWithGoogle() {
+    this.auth.googleSignIn();
   }
 
   logarEmail() {
-    // if (this.form.invalid) {
-    //   return;
-    // }
-    // const dados = this.form.value;
-    // this.afAuth.auth
-    //   .signInWithEmailAndPassword(dados.email, dados.senha)
-    //   .then(res  => this.router.navigate([this.PRE_JOGO_PATH]))
-    //   .catch(err => this.snackBar.open(
-    //           'Usuário/senha inválido(s)',
-    //     	  'Erro', { duration: 5000 })
-    // );
+    if (this.loginForm.invalid) {
+      return;
+    }
+    const dados = this.loginForm.value;
+    this.afAuth
+      .signInWithEmailAndPassword(dados.email, dados.password)
+      .then((res) => this.router.navigate([this.PRE_JOGO_PATH]))
+      .catch((err) => this.snackBar.open('Usuário/senha inválido(s)', 'Erro', { duration: 5000 }));
   }
 
   cadastrarEmail() {
-    // if (this.form.invalid) {
-    //   return;
-    // }
-    // const dados = this.form.value;
-    // this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(
-    //   dados.email, dados.senha)
-    //   .then(res  => this.router.navigate([this.PRE_JOGO_PATH]))
-    //   .catch(err => this.snackBar.open(
-    //           'Problema ao cadastrar email.',
-    //     	  'Erro', { duration: 5000 })
-    // );
+    if (this.loginForm.invalid) {
+      return;
+    }
+    const dados = this.loginForm.value;
+    this.afAuth
+      .createUserWithEmailAndPassword(dados.email, dados.password)
+      .then((res) => this.router.navigate([this.PRE_JOGO_PATH]))
+      .catch((err) =>
+        this.snackBar.open('Problema ao cadastrar email.', 'Erro', { duration: 5000 })
+      );
   }
 
   exibirCadastro() {

@@ -11,7 +11,8 @@ export const environment = {
     authDomain: 'fabiogame.firebaseapp.com',
     messagingSenderId: '544365657305',
   },
-  production: false
+  production: false,
+  adminEmail: 'admin@admin.com'
 };
 
 /*
