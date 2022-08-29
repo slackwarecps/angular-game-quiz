@@ -1,8 +1,8 @@
 <div class="admin">
   <div class="logo"></div>
   <img src="/assets/botoes/home.png" class="home" (click)="sair()" />
-  <div class="perguntas-container">
-    <!-- <mat-table [dataSource]="dataSource">
+  <div class="perguntas-container" *ngIf="dataSource$ | async as dataSource">
+    <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="pergunta">
         <mat-header-cell *matHeaderCellDef> Perguntas </mat-header-cell>
         <mat-cell *matCellDef="let pergunta">
@@ -34,7 +34,7 @@
       </ng-container>
       <mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
       <mat-row *matRowDef="let row; columns: colunas"></mat-row>
-    </mat-table> -->
+    </mat-table>
     <mat-paginator
       #paginator
       [pageSize]="5"

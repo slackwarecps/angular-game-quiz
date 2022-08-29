@@ -16,6 +16,7 @@ import { JogoService } from 'src/app/services/jogo.service';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { Dialog1Component } from './dialogs/dialog1/dialog1.component';
+import { Observable } from 'rxjs';
 
 export interface PeriodicElement {
   name: string;
@@ -45,24 +46,29 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class AdminComponent implements OnInit {
   colunas = ['pergunta', 'opcoes', 'correta', 'acao'];
   dataSourcex?: MatTableDataSource<Pergunta>;
+
   dataSource = ELEMENT_DATA;
+  dataSource$?: Observable<Pergunta[]>;
+
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
     private dialog: MatDialog,
-    private perguntasService: PerguntasService,
-    private jogoService: JogoService
+    private perguntasService: PerguntasService // private jogoService: JogoService
   ) {}
 
   ngOnInit() {
     // this.validarAutenticacao();
 
-    this.perguntasService.obterPerguntas().subscribe((perguntas) => {
-      // this.dataSource = new MatTableDataSource<Pergunta>(perguntas);
-      // this.dataSource.paginator = this.paginator;
-    });
+    // this.perguntasService.obterPerguntas().subscribe((perguntas) => {
+    //   this.dataSource = new MatTableDataSource<Pergunta>(perguntas);
+
+    //   //this.dataSource.paginator = this.paginator;
+    // });
+
+    this.dataSource$ = this.perguntasService.obterPerguntas();
   }
 
   validarAutenticacao() {
