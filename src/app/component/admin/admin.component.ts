@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { Dialog1Component } from './dialogs/dialog1/dialog1.component';
 import { Observable } from 'rxjs';
+import { ConfirmarRemoverDialogComponent } from './dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
 
 export interface PeriodicElement {
   name: string;
@@ -84,15 +85,6 @@ export class AdminComponent implements OnInit {
   }
 
   cadastrar() {
-    // this.dialog
-    //   .open(PerguntaFormDialogComponent)
-    //   .afterClosed()
-    //   .subscribe((data) => {
-    //     if (data && data.pergunta !== null) {
-    //       this.perguntasService.cadastrar(data.pergunta);
-    //     }
-    //   });
-
     const dialogRef = this.dialog.open(Dialog1Component);
 
     dialogRef.afterClosed().subscribe((data) => {
@@ -105,27 +97,27 @@ export class AdminComponent implements OnInit {
   }
 
   atualizar($event: any, pergunta: Pergunta) {
-    // $event.preventDefault();
-    // this.dialog
-    //   .open(PerguntaFormDialogComponent, { data: { pergunta: pergunta } })
-    //   .afterClosed()
-    //   .subscribe((data) => {
-    //     if (data && data.pergunta !== null) {
-    //       this.perguntasService.atualizar(data.pergunta, data.id);
-    //     }
-    //   });
+    $event.preventDefault();
+    this.dialog
+      .open(Dialog1Component, { data: { pergunta: pergunta } })
+      .afterClosed()
+      .subscribe((data) => {
+        if (data && data.pergunta !== null) {
+          this.perguntasService.atualizar(data.pergunta, data.id);
+        }
+      });
   }
 
   remover($event: any, perguntaId: string) {
-    // $event.preventDefault();
-    // this.dialog
-    //   .open(ConfirmarRemoverDialogComponent, { data: { perguntaId: perguntaId } })
-    //   .afterClosed()
-    //   .subscribe((data) => {
-    //     if (data) {
-    //       this.perguntasService.remover(data.perguntaId);
-    //     }
-    //   });
+    $event.preventDefault();
+    this.dialog
+      .open(ConfirmarRemoverDialogComponent, { data: { perguntaId: perguntaId } })
+      .afterClosed()
+      .subscribe((data) => {
+        if (data) {
+          this.perguntasService.remover(data.perguntaId);
+        }
+      });
   }
 
   confirmarRestauracaoDados() {

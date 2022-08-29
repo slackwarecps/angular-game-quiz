@@ -25,6 +25,7 @@ import { JogoComponent } from './component/jogo/jogo.component';
 import { LoginComponent } from './component/login/login.component';
 import { PreJogoComponent } from './component/pre-jogo/pre-jogo.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ConfirmarRemoverDialogComponent } from './component/admin/dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
     JogoComponent,
     AdminComponent,
     Dialog1Component,
+    ConfirmarRemoverDialogComponent,
   ],
   imports: [
     BrowserModule,
