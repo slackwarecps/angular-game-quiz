@@ -6,8 +6,8 @@ import {
 } from '@angular/fire/compat/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { Pergunta } from '../models/pergunta';
 import { map } from 'rxjs/operators';
+import { Pergunta } from '../models/pergunta';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,29 @@ export class PerguntasService {
   obterPerguntas(): Observable<Pergunta[]> {
     //recebe e converte para pergunrtas.
     return this.perguntasCollection.snapshotChanges().pipe(map(this.mapearIds));
+  }
+
+  async testeBatch() {
+    const listaNova = await this.afs.collection(this.PERGUNTAS_COLLECTION).ref.get();
+
+    //--create batch--
+    let batch = this.afs.firestore.batch();
+
+    console.log('batch 1', batch);
+    // apagar cada registro
+    listaNova.forEach((pergunta) => {
+      batch.delete(pergunta.ref);
+      console.log(pergunta);
+    });
+    // console.log(pergunta.id);
+    console.log('batch 3');
+    //--finally--
+    return batch.commit();
+  }
+
+  obterPerguntas2() {
+    //recebe e converte para pergunrtas.
+    return this.perguntasCollection.snapshotChanges();
   }
 
   mapearIds(perguntas: DocumentChangeAction<Pergunta>[]): Pergunta[] {
@@ -73,13 +96,22 @@ export class PerguntasService {
     this.removerTodasPerguntas().then((res) => this.adicionarPerguntas());
   }
 
-  async removerTodasPerguntas(): Promise<void> {
-    // const perguntas: firebase.firestore.QuerySnapshot = await this.afs
-    //   .collection(this.PERGUNTAS_COLLECTION)
+  async removerTodasPerguntasXXX(): Promise<void> {
+    // const perguntas: firebase.firestore.QuerySnapshot = await
+    // this.afs.collection(this.PERGUNTAS_COLLECTION)
     //   .ref.get();
     // const batch = this.afs.firestore.batch();
     // perguntas.forEach((pergunta) => batch.delete(pergunta.ref));
     // return batch.commit();
+  }
+
+  async removerTodasPerguntas(): Promise<void> {
+    const listaNova = await this.afs.collection(this.PERGUNTAS_COLLECTION).ref.get();
+    let batch = this.afs.firestore.batch();
+    listaNova.forEach((pergunta) => {
+      batch.delete(pergunta.ref);
+    });
+    return batch.commit();
   }
 
   adicionarPerguntas() {

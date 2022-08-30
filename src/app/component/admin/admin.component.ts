@@ -18,6 +18,7 @@ import { map } from 'rxjs/operators';
 import { Dialog1Component } from './dialogs/dialog1/dialog1.component';
 import { Observable } from 'rxjs';
 import { ConfirmarRemoverDialogComponent } from './dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
+import { ConfirmarRestauracaoDialogComponent } from './dialogs/confirmar-restauracao-dialog/confirmar-restauracao-dialog.component';
 
 export interface PeriodicElement {
   name: string;
@@ -121,14 +122,14 @@ export class AdminComponent implements OnInit {
   }
 
   confirmarRestauracaoDados() {
-    // this.dialog
-    //   .open(ConfirmarRestauracaoDialogComponent)
-    //   .afterClosed()
-    //   .subscribe((resposta) => {
-    //     if (resposta) {
-    //       this.perguntasService.restaurarPerguntas();
-    //     }
-    //   });
+    this.dialog
+      .open(ConfirmarRestauracaoDialogComponent)
+      .afterClosed()
+      .subscribe((resposta) => {
+        if (resposta) {
+          this.perguntasService.restaurarPerguntas();
+        }
+      });
   }
 
   inicializarJogos() {

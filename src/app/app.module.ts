@@ -26,6 +26,8 @@ import { LoginComponent } from './component/login/login.component';
 import { PreJogoComponent } from './component/pre-jogo/pre-jogo.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ConfirmarRemoverDialogComponent } from './component/admin/dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
+import { Form1Component } from './component/form1/form1.component';
+import { ConfirmarRestauracaoDialogComponent } from './component/admin/dialogs/confirmar-restauracao-dialog/confirmar-restauracao-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { ConfirmarRemoverDialogComponent } from './component/admin/dialogs/confi
     AdminComponent,
     Dialog1Component,
     ConfirmarRemoverDialogComponent,
+    ConfirmarRestauracaoDialogComponent,
+    Form1Component,
   ],
   imports: [
     BrowserModule,
