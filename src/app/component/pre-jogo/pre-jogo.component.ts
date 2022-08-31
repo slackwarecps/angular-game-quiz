@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { PreJogoService } from 'src/app/services/pre-jogo.service';
 
 @Component({
   selector: 'app-pre-jogo',
@@ -8,10 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./pre-jogo.component.css'],
 })
 export class PreJogoComponent implements OnInit {
-  //constructor() { }
-
-  //ngOnInit(): void {  }
-
   readonly P_FADA_VERMELHA = 'fada-vermelha';
   readonly P_ELFO_VERDE = 'elfo-verde';
   readonly P_ELFO_AZUL = 'elfo-azul';
@@ -19,17 +16,21 @@ export class PreJogoComponent implements OnInit {
 
   nome: string = '';
 
-  constructor(private fireauth: AngularFireAuth, private router: Router) {} // private preJogoService: PreJogoService // private router: Router, // private afAuth: AngularFireAuth,
+  constructor(
+    private fireauth: AngularFireAuth,
+    private router: Router,
+    private preJogoService: PreJogoService
+  ) {}
 
   ngOnInit() {
     this.validarAutenticacao();
-    // this.preJogoService.obterJogosDisponiveis();
+    this.preJogoService.obterJogosDisponiveis();
   }
 
   validarAutenticacao() {
     this.fireauth.authState.subscribe(
       (dataReceived) => {
-        // this.preJogoService.nomeJogador = dataReceived.email.split('@')[0];
+        this.preJogoService.nomeJogador = 'admin';
 
         console.log(dataReceived);
       },
@@ -49,15 +50,15 @@ export class PreJogoComponent implements OnInit {
   }
 
   selecionarPersonagem(personagem: string) {
-    // if (this.preJogoService.personagem) {
-    //   return;
-    // }
-    // this.preJogoService.selecionarPersonagem(personagem);
+    if (this.preJogoService.personagem) {
+      return;
+    }
+    this.preJogoService.selecionarPersonagem(personagem);
   }
 
   get personagem() {
-    return '';
-    //return this.preJogoService.personagem;
+    //return '';
+    return this.preJogoService.personagem;
   }
 
   sair() {

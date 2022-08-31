@@ -28,6 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ConfirmarRemoverDialogComponent } from './component/admin/dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
 import { Form1Component } from './component/form1/form1.component';
 import { ConfirmarRestauracaoDialogComponent } from './component/admin/dialogs/confirmar-restauracao-dialog/confirmar-restauracao-dialog.component';
+import { JogosFormDialogComponent } from './component/admin/dialogs/jogos-form-dialog/jogos-form-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { ConfirmarRestauracaoDialogComponent } from './component/admin/dialogs/c
     ConfirmarRemoverDialogComponent,
     ConfirmarRestauracaoDialogComponent,
     Form1Component,
+    JogosFormDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import { ConfirmarRestauracaoDialogComponent } from './component/admin/dialogs/c
     MatDialogModule,
     MatIconModule,
     MatSelectModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

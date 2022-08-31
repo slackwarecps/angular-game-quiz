@@ -19,6 +19,7 @@ import { Dialog1Component } from './dialogs/dialog1/dialog1.component';
 import { Observable } from 'rxjs';
 import { ConfirmarRemoverDialogComponent } from './dialogs/confirmar-remover-dialog/confirmar-remover-dialog.component';
 import { ConfirmarRestauracaoDialogComponent } from './dialogs/confirmar-restauracao-dialog/confirmar-restauracao-dialog.component';
+import { JogosFormDialogComponent } from './dialogs/jogos-form-dialog/jogos-form-dialog.component';
 
 export interface PeriodicElement {
   name: string;
@@ -58,7 +59,8 @@ export class AdminComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private dialog: MatDialog,
-    private perguntasService: PerguntasService // private jogoService: JogoService
+    private perguntasService: PerguntasService,
+    private jogoService: JogoService
   ) {}
 
   ngOnInit() {
@@ -133,13 +135,13 @@ export class AdminComponent implements OnInit {
   }
 
   inicializarJogos() {
-    // this.dialog
-    //   .open(JogosFormDialogComponent)
-    //   .afterClosed()
-    //   .subscribe((data) => {
-    //     if (data) {
-    //       this.jogoService.inicializarJogos(data);
-    //     }
-    //   });
+    this.dialog
+      .open(JogosFormDialogComponent)
+      .afterClosed()
+      .subscribe((data) => {
+        if (data) {
+          this.jogoService.inicializarJogos(data);
+        }
+      });
   }
 }
