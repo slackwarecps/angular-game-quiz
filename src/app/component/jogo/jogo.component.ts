@@ -25,7 +25,8 @@ export class JogoComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
     const jogoId = this.route.snapshot.paramMap.get('id');
-    // this.jogoService.iniciarRecursos(jogoId);
+    console.log('jogoid: ', jogoId);
+    if (jogoId != null) this.jogoService.iniciarRecursos(jogoId);
   }
 
   ngAfterViewInit() {
@@ -41,9 +42,9 @@ export class JogoComponent implements AfterViewInit, OnInit, OnDestroy {
   //   this.jogoService.restaurarJogo();
   // }
 
-  // selecionarOpcao(opcaoNum: number) {
-  //   this.jogoService.jogo.questaoSel = opcaoNum;
-  // }
+  selecionarOpcao(opcaoNum: number) {
+    if (this.jogoService.jogo != undefined) this.jogoService.jogo.questaoSel = opcaoNum;
+  }
 
   confirmar(event: any) {
     event.preventDefault();
@@ -54,13 +55,14 @@ export class JogoComponent implements AfterViewInit, OnInit, OnDestroy {
     this.jogoService.mostrarPopup = false;
   }
 
-  // novoJogo() {
-  //   this.jogoService.restaurarJogo().then((res) => (location.href = '/pre-jogo'));
-  // }
+  novoJogo() {
+    this.jogoService.restaurarJogo().then((res) => (location.href = '/pre-jogo'));
+  }
 
-  // selecionado(index: number) {
-  //   return index == this.jogoService.jogo.questaoSel;
-  // }
+  selecionado(index: number) {
+    if (this.jogoService.jogo != undefined) return index == this.jogoService.jogo.questaoSel;
+    else return -1000;
+  }
 
   get questaoSel() {
     if (!this.jogoService.jogo) {

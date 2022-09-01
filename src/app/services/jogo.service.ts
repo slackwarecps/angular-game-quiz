@@ -38,9 +38,8 @@ export class JogoService {
   constructor(
     private afs: AngularFirestore,
     private snackBar: MatSnackBar,
-    private afAuth: AngularFireAuth
-  ) // private animacaoService: AnimacaoService
-  {}
+    private afAuth: AngularFireAuth // private animacaoService: AnimacaoService
+  ) {}
 
   adicionarJogosPadrao(qtdJogos: number) {
     if (qtdJogos <= 0) {
@@ -77,11 +76,14 @@ export class JogoService {
   }
 
   iniciarRecursos(jogoId: string) {
+    console.log('iniciando recursos....');
     this.aguardandoOponente = true;
     this.mostrarPopup = false;
     this.fimJogo = false;
     this.perguntaAtual = { questao: '', opcoes: [] };
     this.jogoDoc = this.afs.doc<Jogo>(this.JOGOS_DOC_PATH + jogoId);
+
+    // if (this.jogoDoc != null)
     // this.jogoObserver = this.jogoDoc.valueChanges();
   }
 
@@ -135,41 +137,45 @@ export class JogoService {
   }
 
   verificarFimJogo() {
-    // if (this.jogador1Venceu()) {
-    //   this.msgPopup = this.jogo.jogador1.nome + this.MSG_VENCEU;
-    //   this.fimJogo = true;
-    // }
-    // if (this.jogador2Venceu()) {
-    //   this.msgPopup = this.jogo.jogador2.nome + this.MSG_VENCEU;
-    //   this.fimJogo = true;
-    // }
-    // if (this.fimJogo) {
-    //   this.restaurarJogo();
-    // }
+    if (this.jogador1Venceu()) {
+      this.msgPopup = this.jogo?.jogador1?.nome + this.MSG_VENCEU;
+      this.fimJogo = true;
+    }
+    if (this.jogador2Venceu()) {
+      this.msgPopup = this.jogo?.jogador2?.nome + this.MSG_VENCEU;
+      this.fimJogo = true;
+    }
+    if (this.fimJogo) {
+      this.restaurarJogo();
+    }
   }
 
-  // jogador1Venceu(): boolean {
-  //   return this.jogo.placar.jogador1.acertos == this.NUM_QUESTOES;
-  // }
+  jogador1Venceu(): boolean {
+    return this.jogo?.placar?.jogador1.acertos == this.NUM_QUESTOES;
+  }
 
-  // jogador2Venceu(): boolean {
-  //   if (this.jogo!= undefined)
-  //     return this.jogo.placar.jogador2.acertos == this.NUM_QUESTOES;
-  // }
+  jogador2Venceu(): boolean {
+    if (this.jogo != undefined) return this.jogo.placar?.jogador2.acertos == this.NUM_QUESTOES;
+    else return false;
+  }
 
-  // restaurarJogo(): Promise<void> {
-  //   if (this.jogoDoc != undefined) return this.jogoDoc.update({ qtdJogadores: 0 });
-  // }
+  restaurarJogo(): Promise<void> {
+    if (this.jogoDoc == undefined) {
+      return new Promise((resolve) => resolve());
+    } else {
+      return this.jogoDoc.update({ qtdJogadores: 0 });
+    }
+  }
 
   aguardarJogadaAdversario(): boolean {
-    // if (!this.nomeJogador || !this.jogo) {
-    //   return false;
-    // }
-    // let jogLocal: number = this.JOGADOR_1;
-    // if (this.jogo.jogador2.nome == this.nomeJogador) {
-    //   jogLocal = this.JOGADOR_2;
-    // }
-    // return jogLocal != this.jogo.vezJogar;
+    if (!this.nomeJogador || !this.jogo) {
+      return false;
+    }
+    let jogLocal: number = this.JOGADOR_1;
+    if (this.jogo?.jogador2?.nome == this.nomeJogador) {
+      jogLocal = this.JOGADOR_2;
+    }
+    return jogLocal != this.jogo.vezJogar;
     return false;
   }
 
@@ -193,27 +199,38 @@ export class JogoService {
   }
 
   verificarQuestaoCorreta(): boolean {
-    // return this.perguntaAtual.correta == this.jogo.questaoSel;
-    return true;
+    if (this.jogo != undefined) {
+      return this.perguntaAtual.correta == this.jogo.questaoSel;
+    } else {
+      return false;
+    }
   }
 
   atualizarPlacar() {
-    // if (this.jogo.vezJogar == this.JOGADOR_1) {
-    //   this.jogo.placar.jogador1.acertos++;
-    // } else {
-    //   this.jogo.placar.jogador2.acertos++;
-    // }
+    if (
+      this.jogo != undefined &&
+      this.jogo.vezJogar != undefined &&
+      this.jogo.placar != undefined
+    ) {
+      if (this.jogo.vezJogar == this.JOGADOR_1) {
+        this.jogo.placar.jogador1.acertos++;
+      } else {
+        this.jogo.placar.jogador2.acertos++;
+      }
+    }
   }
 
   atualizarVezJogar() {
-    // switch (this.jogo.vezJogar) {
-    //   case this.JOGADOR_1:
-    //     this.jogo.vezJogar = this.JOGADOR_2;
-    //     break;
-    //   case this.JOGADOR_2:
-    //     this.jogo.vezJogar = this.JOGADOR_1;
-    //     break;
-    // }
+    if (this.jogo != undefined) {
+      switch (this.jogo.vezJogar) {
+        case this.JOGADOR_1:
+          this.jogo.vezJogar = this.JOGADOR_2;
+          break;
+        case this.JOGADOR_2:
+          this.jogo.vezJogar = this.JOGADOR_1;
+          break;
+      }
+    }
   }
 
   iniciarAnimacao() {
@@ -232,9 +249,13 @@ export class JogoService {
 
   obterJogadorAnterior(): number {
     let jogadorAnterior: number = this.JOGADOR_1;
-    // if (this.jogo.vezJogar == this.JOGADOR_1) {
-    //   jogadorAnterior = this.JOGADOR_2;
-    // }
+
+    if (this.jogo != undefined) {
+      if (this.jogo.vezJogar == this.JOGADOR_1) {
+        jogadorAnterior = this.JOGADOR_2;
+      }
+    }
+
     return jogadorAnterior;
   }
 }

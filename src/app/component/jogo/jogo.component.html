@@ -8,15 +8,15 @@
   <div *ngFor="let opcao of perguntaAtual.opcoes; let i = index" class="btnOpcao">
     {{ opcao }}
   </div>
-  <!-- <button
+  <button
     class="btnConfirmar"
-    [ngClass]="{ btnConfirmar: questaoSel >= 0, btnInativo: questaoSel < 0 }"
+    [ngClass]="{ btnConfirmar: questaoSel! >= 0, btnInativo: questaoSel! < 0 }"
     (click)="confirmar($event)"
-    [disabled]="questaoSel < 0"
+    [disabled]="questaoSel! < 0"
     *ngIf="!aguardarJogadaAdversario"
-  > 
+  >
     Confirmar
-  </button>-->
+  </button>
   <p *ngIf="aguardarJogadaAdversario">
     Aguarde seu oponente jogar
     <br />

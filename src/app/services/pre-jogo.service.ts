@@ -18,9 +18,9 @@ export class PreJogoService {
   readonly JOGOS_COLLECTION = 'jogos/';
   readonly JOGOS_QTD_JOGADORES = 'qtdJogadores';
 
-  personagem!: string;
+  personagem: string | null = null;
   jogos!: Observable<DocumentChangeAction<Jogo>[]>;
-  jogo!: Jogo;
+  jogo?: Jogo | null;
   jogoDoc!: AngularFirestoreDocument<Jogo>;
   nomeJogador!: string;
   jogadorStrategy!: JogadorStrategy;
@@ -32,16 +32,20 @@ export class PreJogoService {
   ) {}
 
   obterJogosDisponiveis() {
+    console.log('Jogos disponiveis..');
     this.jogos = this.afs
       .collection<Jogo>(this.JOGOS_COLLECTION, (ref) =>
         ref.where(this.JOGOS_QTD_JOGADORES, '<=', 1).orderBy(this.JOGOS_QTD_JOGADORES, 'desc')
       )
       .snapshotChanges();
+
+    console.log(this.jogos);
   }
 
   selecionarPersonagem(personagem: string) {
+    console.log('pre-jogo service >> selecionar personagem', personagem);
     this.personagem = personagem;
-    //  this.jogo = null; // necessário para um segundo jogo
+    this.jogo = null; // necessário para um segundo jogo
     this.jogos.subscribe((jogosDoc: DocumentChangeAction<Jogo>[]) => {
       for (let i in jogosDoc) {
         if (!this.jogo) {
@@ -52,14 +56,19 @@ export class PreJogoService {
   }
 
   selecionarJogo(jogoDoc: DocumentChangeAction<Jogo>) {
+    console.log('selecionou jogo: ', jogoDoc);
     const jogo = jogoDoc.payload.doc;
     this.jogo = jogo.data() as Jogo;
     this.jogo.id = jogo.id;
+
+    console.log('Jogo ', this.jogo);
+    console.log('pronto pra inciar jogo....');
     this.iniciarJogo();
   }
 
   iniciarJogo() {
-    if (this.jogo.qtdJogadores == 0) {
+    console.log('Iniciou o jogo...');
+    if (this.jogo?.qtdJogadores == 0) {
       this.jogadorStrategy = this.jogador1StrategyService;
     } else {
       this.jogadorStrategy = this.jogador2StrategyService;
@@ -69,7 +78,11 @@ export class PreJogoService {
       nome: this.nomeJogador,
       personagem: this.personagem,
     };
-    this.personagem = 'bozo';
+    this.personagem = null;
+
+    console.info(dadosJogador);
+    console.info('qtd jogadores ', this.jogo?.qtdJogadores);
+
     this.jogadorStrategy.executar(this.jogo, dadosJogador);
   }
 }

@@ -14,10 +14,8 @@ export class PreJogoComponent implements OnInit {
   readonly P_ELFO_AZUL = 'elfo-azul';
   readonly P_ARQUEIRA = 'arqueira';
 
-  nome: string = '';
-
   constructor(
-    private fireauth: AngularFireAuth,
+    private afAuth: AngularFireAuth,
     private router: Router,
     private preJogoService: PreJogoService
   ) {}
@@ -28,41 +26,32 @@ export class PreJogoComponent implements OnInit {
   }
 
   validarAutenticacao() {
-    this.fireauth.authState.subscribe(
-      (dataReceived) => {
-        this.preJogoService.nomeJogador = 'admin';
-
-        console.log(dataReceived);
-      },
-      (erro) => {
-        console.log(erro);
+    this.afAuth.authState.subscribe((authState) => {
+      if (authState) {
+        if (authState.email != undefined)
+          this.preJogoService.nomeJogador = authState.email?.split('@')[0];
+      } else {
         this.router.navigate(['/']);
       }
-    );
-
-    // this.afAuth.authState.subscribe((authState) => {
-    //   if (authState) {
-    //     this.preJogoService.nomeJogador = authState.email.split('@')[0];
-    //   } else {
-    //     this.router.navigate(['/']);
-    //   }
-    // });
+    });
   }
 
   selecionarPersonagem(personagem: string) {
-    if (this.preJogoService.personagem) {
+    console.log('Pre jogo Componente:: selecionar personagem:', personagem);
+    if (this.preJogoService.personagem != undefined) {
+      console.log('retorna ...');
       return;
     }
     this.preJogoService.selecionarPersonagem(personagem);
   }
 
   get personagem() {
-    //return '';
     return this.preJogoService.personagem;
   }
 
   sair() {
-    this.fireauth.signOut();
+    console.log('saiu do pre jogo deslogando.....');
+    this.afAuth.signOut();
     this.router.navigate(['/']);
   }
 }

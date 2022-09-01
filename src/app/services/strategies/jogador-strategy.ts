@@ -18,21 +18,27 @@ export abstract class JogadorStrategy {
 
   abstract procurar(string: String): void;
 
-  abstract executar(jogo: Jogo, dadosJogador: DadosJogador): void;
+  abstract executar(jogo: Jogo | null | undefined, dadosJogador: DadosJogador): void;
 
   atualizarDadosJogoFirebase(jogo: Jogo) {
-    // const jogosCollectionUrl = this.JOGOS_COLLECTION + jogo.id;
-    // const jogoUrl = this.JOGO_DOCUMENT + jogo.id;
-    // this.afs
-    //   .doc<Jogo>(jogosCollectionUrl)
-    //   .update(jogo)
-    //   .then((res) => this.router.navigate([jogoUrl]))
-    //   .catch((err) =>
-    //     this.snackBar.open(
-    //       'Erro ao iniciar o jogo, tente novamente.',
-    //       'Erro',
-    //       this.SNACKBAR_DURATION
-    //     )
-    //   );
+    const jogosCollectionUrl = this.JOGOS_COLLECTION + jogo.id;
+    const jogoUrl = this.JOGO_DOCUMENT + jogo.id;
+
+    console.log('vou atualizar o jogo.... antes de chamar a tela de jogo...');
+    console.log({ jogo });
+    this.afs
+      .doc<Jogo>(jogosCollectionUrl)
+      .update(jogo)
+      .then((res) => {
+        console.log('redicionar para jogo aqui....');
+        this.router.navigate([jogoUrl]);
+      })
+      .catch((err) =>
+        this.snackBar.open(
+          'Erro ao iniciar o jogo, tente novamente.',
+          'Erro',
+          this.SNACKBAR_DURATION
+        )
+      );
   }
 }

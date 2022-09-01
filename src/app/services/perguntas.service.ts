@@ -3,6 +3,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
   DocumentChangeAction,
+  DocumentReference,
 } from '@angular/fire/compat/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -96,21 +97,18 @@ export class PerguntasService {
     this.removerTodasPerguntas().then((res) => this.adicionarPerguntas());
   }
 
-  async removerTodasPerguntasXXX(): Promise<void> {
-    // const perguntas: firebase.firestore.QuerySnapshot = await
-    // this.afs.collection(this.PERGUNTAS_COLLECTION)
-    //   .ref.get();
-    // const batch = this.afs.firestore.batch();
-    // perguntas.forEach((pergunta) => batch.delete(pergunta.ref));
-    // return batch.commit();
-  }
-
   async removerTodasPerguntas(): Promise<void> {
     const listaNova = await this.afs.collection(this.PERGUNTAS_COLLECTION).ref.get();
+    // console.log('lista nova: ', listaNova);
+    console.log({ listaNova });
+
     let batch = this.afs.firestore.batch();
-    listaNova.forEach((pergunta) => {
-      batch.delete(pergunta.ref);
+
+    //insiro cada delete....
+    listaNova.forEach((itemLista) => {
+      batch.delete(itemLista.ref);
     });
+
     return batch.commit();
   }
 

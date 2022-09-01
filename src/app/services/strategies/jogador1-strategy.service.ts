@@ -19,9 +19,11 @@ export class Jogador1StrategyService extends JogadorStrategy {
   }
 
   executar(jogo: Jogo, dadosJogador: DadosJogador) {
+    console.log('strategy 1 : ', jogo, dadosJogador);
     jogo.dataAtualizacao = new Date().getTime();
     jogo.jogador1 = dadosJogador;
     jogo.qtdJogadores++;
+    if (jogo.qtdJogadores) console.log('qtd strategia 1: ', jogo.qtdJogadores);
     super.atualizarDadosJogoFirebase(jogo);
   }
 }

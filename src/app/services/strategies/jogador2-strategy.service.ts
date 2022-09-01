@@ -33,6 +33,7 @@ export class Jogador2StrategyService extends JogadorStrategy {
   }
 
   executar(jogo: Jogo, dadosJogador: DadosJogador) {
+    console.log('estrategia 2 :', jogo, dadosJogador);
     this.perguntasService.obterPerguntas().subscribe(
       (perguntas) => {
         jogo = this.popularDadosJogo(jogo, dadosJogador, perguntas);
@@ -50,18 +51,36 @@ export class Jogador2StrategyService extends JogadorStrategy {
   popularDadosJogo(jogo: Jogo, dadosJogador: DadosJogador, perguntas: Pergunta[]): Jogo {
     jogo.dataAtualizacao = new Date().getTime();
     //caso jogador1 seja o mesmo da seleção vai para a espera do adversário
-    if (jogo.jogador1 != undefined) {
-      if (jogo.jogador1.nome == dadosJogador.nome) {
-        jogo.jogador1.personagem = dadosJogador.personagem;
-        return jogo;
-      }
+    if (jogo.jogador1?.nome == dadosJogador.nome) {
+      jogo.jogador1.personagem = dadosJogador.personagem;
+      console.log('eh o mesmo ignorando...');
+      return jogo;
     }
 
+    console.log('NAO eh o mesmo incrementando qtd jogador.....');
     jogo.jogador2 = dadosJogador;
     jogo = this.definirDadosPadraoJogo(jogo);
     jogo = this.popularQuestoes(jogo, perguntas);
     jogo.qtdJogadores++;
     return jogo;
+
+    // jogo.dataAtualizacao = new Date().getTime();
+    // //caso jogador1 seja o mesmo da seleção vai para a espera do adversário
+
+    // if (jogo.jogador1?.nome == undefined) {
+    //   console.log('sem nome de jogador1');
+    // } else {
+    //   if (jogo.jogador1.nome == dadosJogador.nome) {
+    //     jogo.jogador1.personagem = dadosJogador.personagem;
+    //     return jogo;
+    //   }
+    // }
+
+    // jogo.jogador2 = dadosJogador;
+    // jogo = this.definirDadosPadraoJogo(jogo);
+    // jogo = this.popularQuestoes(jogo, perguntas);
+    // jogo.qtdJogadores++;
+    // return jogo;
   }
 
   definirDadosPadraoJogo(jogo: Jogo): Jogo {
