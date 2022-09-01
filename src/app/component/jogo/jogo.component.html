@@ -1,11 +1,16 @@
 <div class="quiz">
   <div class="logo"></div>
   <img src="/assets/botoes/home.png" class="home" (click)="sair()" />
-  <img src="/assets/botoes/left.png" class="novo-jogo" />
+  <img src="/assets/botoes/left.png" class="novo-jogo" (click)="novoJogo()" />
   <p class="pergunta">
     {{ perguntaAtual.questao }}
   </p>
-  <div *ngFor="let opcao of perguntaAtual.opcoes; let i = index" class="btnOpcao">
+  <div
+    *ngFor="let opcao of perguntaAtual.opcoes; let i = index"
+    class="btnOpcao"
+    [ngClass]="{ btnOpcaoAtivo: i == questaoSel, btnOpcao: i != questaoSel }"
+    (click)="selecionarOpcao(i)"
+  >
     {{ opcao }}
   </div>
   <button
@@ -25,7 +30,7 @@
   <div class="popup" [ngStyle]="{ display: mostrarPopup ? 'block' : 'none' }">
     <p>{{ msgPopup }}</p>
     <div class="btnPopup" (click)="fecharPopup()" *ngIf="!fimJogo">Continuar</div>
-    <div class="btnPopup" *ngIf="fimJogo">Novo Jogo</div>
+    <div class="btnPopup" (click)="novoJogo()" *ngIf="fimJogo">Novo Jogo</div>
   </div>
   <div class="popup" [ngStyle]="{ display: aguardandoOponente ? 'block' : 'none' }">
     <br />

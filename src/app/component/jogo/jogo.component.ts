@@ -30,6 +30,7 @@ export class JogoComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    console.log('After view init...');
     this.jogoService.iniciarJogo();
   }
 
@@ -43,6 +44,7 @@ export class JogoComponent implements AfterViewInit, OnInit, OnDestroy {
   // }
 
   selecionarOpcao(opcaoNum: number) {
+    console.log(opcaoNum);
     if (this.jogoService.jogo != undefined) this.jogoService.jogo.questaoSel = opcaoNum;
   }
 

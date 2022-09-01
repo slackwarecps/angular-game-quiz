@@ -83,33 +83,33 @@ export class JogoService {
     this.perguntaAtual = { questao: '', opcoes: [] };
     this.jogoDoc = this.afs.doc<Jogo>(this.JOGOS_DOC_PATH + jogoId);
 
-    // if (this.jogoDoc != null)
-    // this.jogoObserver = this.jogoDoc.valueChanges();
+    //  this.jogoObserver = this.jogoDoc.valueChanges();
   }
 
   iniciarJogo() {
-    // this.obterNomeJogador();
-    // this.jogoObserver.subscribe((jogo) => {
-    //   if (this.perguntaAtual.questao == '' && jogo.questoes) {
-    //     this.perguntaAtual = jogo.questoes[0];
-    //   }
-    //   if (this.fimJogo) {
-    //     return;
-    //   }
-    //   if (this.jogo) {
-    //     this.jogo = jogo;
-    //     this.atualizarJogo();
-    //     this.mostrarPopup = true;
-    //   }
-    //   if (jogo.qtdJogadores == 2 && !this.jogo) {
-    //     this.jogo = jogo;
-    //     this.iniciarAnimacao();
-    //     this.aguardandoOponente = false;
-    //   }
-    //   if (jogo.qtdJogadores == 0) {
-    //     this.vitoriaPorAbandono();
-    //   }
-    // });
+    console.log('jogo.service-iniciarJogo...');
+    this.obterNomeJogador();
+    this.jogoDoc?.valueChanges().subscribe((jogo) => {
+      if (this.perguntaAtual.questao == '' && jogo?.questoes) {
+        this.perguntaAtual = jogo.questoes[0];
+      }
+      if (this.fimJogo) {
+        return;
+      }
+      if (this.jogo != null) {
+        this.jogo = jogo;
+        this.atualizarJogo();
+        this.mostrarPopup = true;
+      }
+      if (jogo?.qtdJogadores == 2 && !this.jogo) {
+        this.jogo = jogo;
+        this.iniciarAnimacao();
+        this.aguardandoOponente = false;
+      }
+      if (jogo?.qtdJogadores == 0) {
+        this.vitoriaPorAbandono();
+      }
+    });
   }
 
   obterNomeJogador() {
@@ -121,13 +121,17 @@ export class JogoService {
   }
 
   atualizarJogo() {
-    // if (this.jogo.questaoCorreta) {
-    //   this.msgPopup = this.MSG_CORRETA;
-    //   this.animacaoService.atacar(this.obterJogadorAnterior());
-    // } else {
-    //   this.msgPopup = this.MSG_INCORRETA;
-    // }
-    // this.verificarFimJogo();
+    console.log('atualizar Jogo .... ');
+    if (this.jogo?.questaoCorreta) {
+      this.msgPopup = this.MSG_CORRETA;
+      // this.animacaoService.atacar(this.obterJogadorAnterior());
+    } else {
+      this.msgPopup = this.MSG_INCORRETA;
+    }
+    this.verificarFimJogo();
+
+    console.log(this.jogo?.questoes);
+
     // this.perguntaAtual = this.jogo.questoes[this.jogo.questaoNum];
   }
 
@@ -183,19 +187,31 @@ export class JogoService {
     if (this.fimJogo) {
       return;
     }
-    // this.jogo.questaoCorreta = this.verificarQuestaoCorreta();
-    // if (this.jogo.questaoCorreta) {
-    //   this.atualizarPlacar();
-    //   this.animacaoService.atacar(this.jogo.vezJogar);
-    // }
-    // this.atualizarVezJogar();
-    // this.jogo.questaoSel = this.NENHUMA_SELECAO;
-    // this.jogo.questaoNum++;
-    // if (this.jogo.questoes.length == this.jogo.questaoNum) {
-    //   this.jogo.questaoNum = 0;
-    // }
-    // this.perguntaAtual = this.jogo.questoes[this.jogo.questaoNum];
-    // this.jogoDoc.update(this.jogo);
+    if (this.jogo != undefined) {
+      this.jogo.questaoCorreta = this.verificarQuestaoCorreta();
+      if (this.jogo.questaoCorreta) {
+        this.atualizarPlacar();
+        // this.animacaoService.atacar(this.jogo.vezJogar);
+      }
+
+      this.atualizarVezJogar();
+      this.jogo.questaoSel = this.NENHUMA_SELECAO;
+      if (this.jogo.questaoNum != undefined) this.jogo.questaoNum++;
+
+      if (this.jogo.questaoNum != undefined) {
+        if (this.jogo.questoes != undefined)
+          if (this.jogo.questoes.length == this.jogo.questaoNum) {
+            this.jogo.questaoNum = 0;
+          }
+      }
+    }
+    if (this.jogo != null) {
+      if (this.jogo.questaoNum != null)
+        if (this.jogo.questoes != null)
+          this.perguntaAtual = this.jogo.questoes[this.jogo.questaoNum];
+    }
+
+    if (this.jogoDoc != null && this.jogo != null) this.jogoDoc.update(this.jogo);
   }
 
   verificarQuestaoCorreta(): boolean {
